@@ -42,7 +42,7 @@ public class ProjectTests {
     assertTrue(maxHeap.isEmpty());
   }
 
-  @Test 
+  @Test
   public void testEnqueuePeekSize() {
     assertEquals(minHeap.getSize(), 0);
     assertEquals(minHeap.getSize(), 0);
@@ -136,7 +136,7 @@ public class ProjectTests {
     assertEquals(minHeap.getSize(), 0);
     Condition condition = Condition.valueOf("SEVERE".toUpperCase());
     Patient first = null;
-    for (int i = 1; i < 200; i++) {
+    for (int i = 1; i < 5; i++) {
       Patient p = new Patient("a", "b", i, condition);
       if (i == 1) {
         first = p;

@@ -10,6 +10,7 @@ public class Heap<T> implements PriorityQueueADT<T> {
   private Comparator<T> comparator;
   private final static int INIT_SIZE = 5;
 
+  
   /**
    * Constructor for the heap.
    * @param comparator comparator object to define a sorting order for the heap elements.
@@ -17,6 +18,10 @@ public class Heap<T> implements PriorityQueueADT<T> {
    */
   public Heap(Comparator<T> comparator, boolean isMaxHeap) {
       //TODO: Implement this method.
+
+      this.comparator = comparator;
+      this.isMaxHeap = isMaxHeap;
+      heap = (T[]) new Object[INIT_SIZE];
   }
 
   /**
@@ -31,6 +36,21 @@ public class Heap<T> implements PriorityQueueADT<T> {
    */
   public void bubbleUp(int index) {
       //TODO: Implement this method.
+
+      if (index < 1) return;
+      int parentIndex = (index - 1) / 2;
+      
+      if (compareElements(heap[parentIndex], heap[index]) < 0){
+        
+          swapIndices(index, parentIndex);
+      }
+  }
+
+  private void swapIndices(int index1, int index2){
+
+      T tempData = heap[index1];
+      heap[index1] = heap[index2];
+      heap[index2] = tempData;
   }
 
   /**
@@ -46,6 +66,7 @@ public class Heap<T> implements PriorityQueueADT<T> {
    */
   public void bubbleDown(int index) {
       //TODO: Implement this method.
+      
   }
 
   /**
@@ -55,6 +76,8 @@ public class Heap<T> implements PriorityQueueADT<T> {
   public boolean isEmpty() {
     boolean isEmpty = false;
       //TODO: Implement this method.
+
+      if (numElements == 0) isEmpty = true;
     return isEmpty;
   }
 
@@ -65,7 +88,8 @@ public class Heap<T> implements PriorityQueueADT<T> {
   public int getSize(){
     int size = -100;
       //TODO: Implement this method.
-        return size;
+
+        return numElements;
   }
 
   /**
@@ -99,7 +123,9 @@ public class Heap<T> implements PriorityQueueADT<T> {
      T data = null;
       //TODO: Implement this method.
 
-    return data;
+    if (isEmpty()) throw new QueueUnderflowException();
+
+    return heap[0];
   }  
 
   /**
@@ -111,6 +137,11 @@ public class Heap<T> implements PriorityQueueADT<T> {
     T data = null;
       //TODO: Implement this method.
 
+      if (isEmpty()) throw new QueueUnderflowException();
+
+      data = heap[0];
+      heap[0] = heap[1];
+
     return data;
   }
 
@@ -120,8 +151,26 @@ public class Heap<T> implements PriorityQueueADT<T> {
    */
   public void enqueueElement(T newElement) {
       //TODO: Implement this method.
+        if (numElements >= heap.length) {
 
+          expandCapacity();
+        }
+
+        heap[numElements] = newElement;
+        bubbleUp(numElements);
+        numElements++;
   }
 
+  private void expandCapacity(){
+
+    T[] expandedHeap = (T[]) new Object[heap.length*2]; //doubles the current length of the heap
+
+    for (int i = 0; i < heap.length; i++){
+
+      expandedHeap[i] = heap[i];
+    }
+
+    heap = expandedHeap;
+  }
 
 }
