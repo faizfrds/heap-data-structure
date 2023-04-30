@@ -37,12 +37,13 @@ public class Heap<T> implements PriorityQueueADT<T> {
   public void bubbleUp(int index) {
       //TODO: Implement this method.
 
-      if (index < 1) return;
+      if (index <= 0) return;
       int parentIndex = (index - 1) / 2;
       
-      if (compareElements(heap[parentIndex], heap[index]) < 0){
+      if (compareElements(heap[index], heap[parentIndex]) > 0){
         
           swapIndices(index, parentIndex);
+          bubbleUp(parentIndex);
       }
   }
 
@@ -64,9 +65,21 @@ public class Heap<T> implements PriorityQueueADT<T> {
    * @param index
    * @throws IndexOutOfBoundsException if invalid index
    */
-  public void bubbleDown(int index) {
+  public void bubbleDown(int index) { //CHATGPT
       //TODO: Implement this method.
-      
+      int leftChildIndex = index * 2 + 1;
+      int rightChildIndex = index * 2 + 2;
+      int maxChildIndex = -1;
+      if (leftChildIndex < numElements) {
+          maxChildIndex = leftChildIndex;
+      }
+      if (rightChildIndex < numElements && compareElements(heap[rightChildIndex], heap[maxChildIndex]) > 0) {
+          maxChildIndex = rightChildIndex;
+      }
+      if (maxChildIndex >= 0 && compareElements(heap[maxChildIndex], heap[index]) > 0) {
+          swapIndices(index, maxChildIndex);
+          bubbleDown(maxChildIndex);
+      }
   }
 
   /**
@@ -88,8 +101,7 @@ public class Heap<T> implements PriorityQueueADT<T> {
   public int getSize(){
     int size = -100;
       //TODO: Implement this method.
-
-        return numElements;
+    return numElements;
   }
 
   /**
@@ -120,12 +132,13 @@ public class Heap<T> implements PriorityQueueADT<T> {
    * @throws QueueUnderflowException if empty
    */
   public T peek() throws QueueUnderflowException {
-     T data = null;
+     
       //TODO: Implement this method.
 
     if (isEmpty()) throw new QueueUnderflowException();
+    T data = heap[0];
 
-    return heap[0];
+    return data;
   }  
 
   /**
@@ -142,6 +155,9 @@ public class Heap<T> implements PriorityQueueADT<T> {
       data = heap[0];
       heap[0] = heap[1];
 
+      numElements--;
+      bubbleDown(0);
+
     return data;
   }
 
@@ -151,9 +167,15 @@ public class Heap<T> implements PriorityQueueADT<T> {
    */
   public void enqueueElement(T newElement) {
       //TODO: Implement this method.
-        if (numElements >= heap.length) {
 
-          expandCapacity();
+        if (isEmpty()){
+          heap[0] = newElement;
+          numElements = 1;
+          return;
+        } 
+
+        if (numElements >= heap.length) {
+            expandCapacity();
         }
 
         heap[numElements] = newElement;
@@ -165,7 +187,7 @@ public class Heap<T> implements PriorityQueueADT<T> {
 
     T[] expandedHeap = (T[]) new Object[heap.length*2]; //doubles the current length of the heap
 
-    for (int i = 0; i < heap.length; i++){
+    for (int i = 0; i < numElements; i++){ //copying elements from old heap to new expanded heap
 
       expandedHeap[i] = heap[i];
     }

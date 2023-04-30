@@ -133,10 +133,10 @@ public class ProjectTests {
   @Test 
   public void testEnqueueSizeIncreasing() {
     assertEquals(minHeap.getSize(), 0);
-    assertEquals(minHeap.getSize(), 0);
+    assertEquals(maxHeap.getSize(), 0);
     Condition condition = Condition.valueOf("SEVERE".toUpperCase());
     Patient first = null;
-    for (int i = 1; i < 5; i++) {
+    for (int i = 1; i < 200; i++) { //1,2,3,4
       Patient p = new Patient("a", "b", i, condition);
       if (i == 1) {
         first = p;
