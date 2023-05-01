@@ -10,6 +10,17 @@ public class Heap<T> implements PriorityQueueADT<T> {
   private Comparator<T> comparator;
   private final static int INIT_SIZE = 5;
 
+  private int getRightChildOf(int parentIndex){
+    return (parentIndex * 2) + 1;
+  }
+
+  private int getLeftChildOf(int parentIndex){
+    return (parentIndex * 2) + 2;
+  }
+
+  private int getParentOf(int childIndex){
+    return (childIndex - 1) / 2;
+  }
   
   /**
    * Constructor for the heap.
@@ -37,8 +48,10 @@ public class Heap<T> implements PriorityQueueADT<T> {
   public void bubbleUp(int index) {
       //TODO: Implement this method.
 
-      if (index <= 0) return;
-      int parentIndex = (index - 1) / 2;
+      if (index > heap.length || index < 0) throw new IndexOutOfBoundsException();
+      
+      if (index == 0) return;
+      int parentIndex = getParentOf(index);
       
       if (compareElements(heap[index], heap[parentIndex]) > 0){
         
@@ -65,22 +78,33 @@ public class Heap<T> implements PriorityQueueADT<T> {
    * @param index
    * @throws IndexOutOfBoundsException if invalid index
    */
-  public void bubbleDown(int index) { //CHATGPT
+  public void bubbleDown(int index) {
       //TODO: Implement this method.
-      int leftChildIndex = index * 2 + 1;
-      int rightChildIndex = index * 2 + 2;
+
+      if (index >= numElements || index < 0) throw new IndexOutOfBoundsException();
+      
+      int leftIndex = getLeftChildOf(index);
+      int rightIndex = getRightChildOf(index);
       int maxChildIndex = -1;
-      if (leftChildIndex < numElements) {
-          maxChildIndex = leftChildIndex;
+
+      if (leftIndex >= numElements) return;
+
+      else if (rightIndex >= numElements || compareElements(heap[leftIndex], heap[rightIndex]) > 0){
+        maxChildIndex = leftIndex;
       }
-      if (rightChildIndex < numElements && compareElements(heap[rightChildIndex], heap[maxChildIndex]) > 0) {
-          maxChildIndex = rightChildIndex;
+
+      else{
+        maxChildIndex = rightIndex;
       }
-      if (maxChildIndex >= 0 && compareElements(heap[maxChildIndex], heap[index]) > 0) {
-          swapIndices(index, maxChildIndex);
-          bubbleDown(maxChildIndex);
+      
+      
+      if (compareElements(heap[maxChildIndex], heap[index]) > 0){
+        swapIndices(index, maxChildIndex);
+        bubbleDown(maxChildIndex);
       }
   }
+
+
 
   /**
    * Test for if the queue is empty.
@@ -153,9 +177,9 @@ public class Heap<T> implements PriorityQueueADT<T> {
       if (isEmpty()) throw new QueueUnderflowException();
 
       data = heap[0];
-      heap[0] = heap[1];
-
+      heap[0] = heap[numElements - 1];
       numElements--;
+
       bubbleDown(0);
 
     return data;
