@@ -54,9 +54,8 @@ public class Heap<T> implements PriorityQueueADT<T> {
       int parentIndex = getParentOf(index);
       
       if (compareElements(heap[index], heap[parentIndex]) > 0){
-        
-          swapIndices(index, parentIndex);
-          bubbleUp(parentIndex);
+        swapIndices(index, parentIndex);
+        bubbleUp(parentIndex);
       }
   }
 
@@ -95,16 +94,13 @@ public class Heap<T> implements PriorityQueueADT<T> {
 
       else{
         maxChildIndex = rightIndex;
-      }
-      
+      } 
       
       if (compareElements(heap[maxChildIndex], heap[index]) > 0){
         swapIndices(index, maxChildIndex);
         bubbleDown(maxChildIndex);
       }
   }
-
-
 
   /**
    * Test for if the queue is empty.
@@ -199,7 +195,7 @@ public class Heap<T> implements PriorityQueueADT<T> {
         } 
 
         if (numElements >= heap.length) {
-            expandCapacity();
+          expandCapacity();
         }
 
         heap[numElements] = newElement;
