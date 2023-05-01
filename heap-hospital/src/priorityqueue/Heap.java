@@ -48,8 +48,8 @@ public class Heap<T> implements PriorityQueueADT<T> {
   public void bubbleUp(int index) {
       //TODO: Implement this method.
 
-      if (index > heap.length || index < 0) throw new IndexOutOfBoundsException();
-      
+      if (index > numElements || index < 0) throw new IndexOutOfBoundsException();
+
       if (index == 0) return;
       int parentIndex = getParentOf(index);
       
@@ -81,13 +81,13 @@ public class Heap<T> implements PriorityQueueADT<T> {
   public void bubbleDown(int index) {
       //TODO: Implement this method.
 
-      if (index >= numElements || index < 0) throw new IndexOutOfBoundsException();
+      if (index > numElements || index < 0) throw new IndexOutOfBoundsException();
       
       int leftIndex = getLeftChildOf(index);
       int rightIndex = getRightChildOf(index);
       int maxChildIndex = -1;
 
-      if (leftIndex >= numElements) return;
+      if (leftIndex > numElements) return;
 
       else if (rightIndex >= numElements || compareElements(heap[leftIndex], heap[rightIndex]) > 0){
         maxChildIndex = leftIndex;

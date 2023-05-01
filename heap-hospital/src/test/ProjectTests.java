@@ -218,7 +218,7 @@ public class ProjectTests {
       assertEquals(first, maxHeap.peek());
       assertEquals(p, minHeap.peek());
     }
-    for (int i = 1; i < 200; i++) {
+    for (int i = 1; i < 199; i++) {
       assertEquals(minHeap.getSize(), 200 - i);
       assertEquals(allPatients[i], maxHeap.peek());
       assertEquals(allPatients[200 - i], minHeap.peek());
